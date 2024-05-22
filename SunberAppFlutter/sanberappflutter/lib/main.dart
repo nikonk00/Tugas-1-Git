@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 // import 'Tugas/Tugas9/Telegram.dart';
 // import 'Tugas/Tugas10/LoginScreen.dart';
-import 'Tugas/Tugas10/HomeScreen.dart';
+// import 'Tugas/Tugas10/HomeScreen.dart';
+import 'Tugas/Tugas12/get_data_screen.dart';
 
 
 void main() {
@@ -19,7 +20,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: HomeScreen(),
+      home: GetDataScreen(),
     );
   }
 }
