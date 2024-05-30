@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sanberappflutter/Tugas/Tugas9/DrawerScreen.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -6,6 +7,16 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: const Text("Home"),
+        actions: <Widget>[
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: const Icon(Icons.search),
+          ),
+        ],
+      ),
+      drawer: DrawerScreen(),
       body: Center(
         child: Container(
           padding: EdgeInsets.all(16),
