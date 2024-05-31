@@ -1,96 +1,132 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:sanberappflutter/Tugas/Tugas10/HomeScreen.dart';
 
-class LoginScreen extends StatelessWidget {
-  const LoginScreen({Key? key}) : super(key: key);
+class LoginScreen extends StatefulWidget {
+  @override
+  LoginScreenState createState() => LoginScreenState();
+}
+
+class LoginScreenState extends State<LoginScreen> {
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
+
+  Future<void> registerSubmit() async {
+    try {
+      await _firebaseAuth.createUserWithEmailAndPassword(
+        email: _emailController.text.toString().trim(),
+        password: _passwordController.text,
+      );
+    } catch (e) {
+      print(e);
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(e.toString())),
+      );
+    }
+  }
+
+  Future<void> loginSubmit() async {
+    try {
+      await _firebaseAuth.signInWithEmailAndPassword(
+        email: _emailController.text,
+        password: _passwordController.text,
+      ).then((value) => Navigator.of(context).pushReplacement(
+        MaterialPageRoute(builder: (context) => HomeScreen()),
+      ));
+    } catch (e) {
+      print(e);
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(e.toString())),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.all(16),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Image.asset(
-                "assets/img/logo.png",
-                height: 80,
-                width: 80,
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              const Text(
-                "JobFinder",
+      body: Padding(
+        padding: EdgeInsets.all(10),
+        child: ListView(
+          children: <Widget>[
+            Container(
+              alignment: Alignment.center,
+              padding: EdgeInsets.all(10),
+              margin: const EdgeInsets.only(top: 40),
+              child: Text(
+                "Latihan Auth",
                 style: TextStyle(
-                  fontSize: 38,
-                  fontWeight: FontWeight.w800,
-                  color: Color(0xff475BD8),
+                  color: Colors.blue,
+                  fontWeight: FontWeight.w500,
+                  fontSize: 30,
                 ),
               ),
-              const SizedBox(
-                height: 10,
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Image.network(
+                "http://wildanafif.id/assets/images/artikel/Apa_itu_Flutter1591067755.png",
+                height: 100,
+                width: 100,
               ),
-              Container(
-                height: 50,
-                width: double.infinity,
-                padding: const EdgeInsets.all(16),
-                decoration: BoxDecoration(
-                  border: Border.all(color: Color(0xff475BD8)),
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: TextFormField(
-                  decoration: const InputDecoration.collapsed(hintText: "Email"),
-                ),
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              Container(
-                height: 50,
-                width: double.infinity,
-                padding: const EdgeInsets.all(16),
-                decoration: BoxDecoration(
-                  border: Border.all(color: Color(0xff475BD8)),
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: TextFormField(
-                  decoration: const InputDecoration.collapsed(hintText: "Password"),
+            ),
+            Container(
+              padding: EdgeInsets.all(10),
+              child: TextField(
+                controller: _emailController,
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(),
+                  labelText: "Username",
                 ),
               ),
-              const SizedBox(
-                height: 10,
+            ),
+            Container(
+              padding: EdgeInsets.all(10),
+              child: TextField(
+                controller: _passwordController,
+                obscureText: true,
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(),
+                  labelText: "Password",
+                ),
               ),
-              Container(
-                height: 50,
-                width: double.infinity,
-                decoration: BoxDecoration(
-                  color: Color(0xff475BD8),
-                  border: Border.all(color: Color(0xff475BD8)),
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: TextButton(
-                  onPressed: () {
-                    Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(builder: (context) => HomeScreen()),
-                    );
-                  },
-                  child: const Text(
-                    "Login",
-                    style: TextStyle(
-                      color: Color(0xffffffff),
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                ),
-              )
-
-            ],
-          ),
+            ),
+            TextButton(
+              onPressed: () {},
+              child: Text("Forgot Password"),
+            ),
+            Container(
+              height: 50,
+              padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
+              child: ElevatedButton(
+                style: raisedButtonStyle,
+                child: Text("Register"),
+                onPressed: registerSubmit,
+              ),
+            ),
+            SizedBox(height: 10),
+            Container(
+              height: 50,
+              padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
+              child: ElevatedButton(
+                style: raisedButtonStyle,
+                child: Text("Login"),
+                onPressed: loginSubmit,
+              ),
+            ),
+          ],
         ),
       ),
     );
   }
 }
+
+final ButtonStyle raisedButtonStyle = ElevatedButton.styleFrom(
+  foregroundColor: Colors.grey[300], // Sets the text color
+  backgroundColor: Colors.blue[300], // Sets the background color
+  minimumSize: Size(88, 36),
+  padding: EdgeInsets.symmetric(horizontal: 16),
+  shape: const RoundedRectangleBorder(
+    borderRadius: BorderRadius.all(Radius.circular(6)),
+  ),
+);

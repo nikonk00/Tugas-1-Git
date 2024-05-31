@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "857565499061",
+    "project_id": "latihan-auth-81246",
+    "storage_bucket": "latihan-auth-81246.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:857565499061:android:4e5511596f176933b9f8fc",
+        "android_client_info": {
+          "package_name": "com.example.sanberappflutter"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDs-mAkQHVEN2Ga9F_4ZkLvuTyY6GlItig"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

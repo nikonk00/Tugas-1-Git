@@ -1,268 +1,85 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:sanberappflutter/Tugas/Tugas9/DrawerScreen.dart';
+import 'package:sanberappflutter/Tugas/Tugas10/LoginScreen.dart';
 
 class HomeScreen extends StatelessWidget {
-  const HomeScreen({Key? key}) : super(key: key);
+  Future<void> _signOut() async {
+    await FirebaseAuth.instance.signOut();
+  }
 
   @override
   Widget build(BuildContext context) {
+    FirebaseAuth auth = FirebaseAuth.instance;
+    if (auth.currentUser != null) {
+      print(auth.currentUser!.email);
+    }
+
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Home"),
-        actions: <Widget>[
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: const Icon(Icons.search),
-          ),
-        ],
-      ),
-      drawer: DrawerScreen(),
-      body: Center(
-        child: Container(
-          padding: EdgeInsets.all(16),
-          margin: EdgeInsets.only(top: 40),
-          color: Colors.white,
-          child: ListView(
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    "Let's Find",
-                    style: TextStyle(fontSize: 30, fontWeight: FontWeight.w800),
+      body: Padding(
+        padding: const EdgeInsets.all(30.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            SizedBox(height: 60),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                IconButton(
+                  icon: Icon(Icons.notifications),
+                  onPressed: () {},
+                ),
+                IconButton(
+                  icon: Icon(Icons.extension),
+                  onPressed: () {},
+                ),
+              ],
+            ),
+            SizedBox(height: 37),
+            Text.rich(
+              TextSpan(
+                children: <TextSpan>[
+                  TextSpan(
+                    text: "Welcome, \n",
+                    style: TextStyle(color: Colors.blue[300]),
                   ),
-                  Icon(
-                    Icons.notifications,
-                    color: Colors.grey,
+                  TextSpan(
+                    text: auth.currentUser!.email,
+                    style: TextStyle(color: Colors.blue[900]),
                   ),
                 ],
               ),
-              SizedBox(height: 10),
-              Text(
-                "Your Dream Jobs",
-                style: TextStyle(fontSize: 30, fontWeight: FontWeight.w800),
-              ),
-              SizedBox(height: 15),
-              Container(
-                height: 50,
-                width: double.infinity,
-                padding: EdgeInsets.all(16),
-                decoration: BoxDecoration(
+              style: TextStyle(fontSize: 30),
+            ),
+            SizedBox(height: 20),
+            TextField(
+              decoration: InputDecoration(
+                prefixIcon: Icon(Icons.search, size: 18),
+                border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(10),
-                  border: Border.all(color: Colors.grey),
                 ),
-                child: TextFormField(
-                  decoration: InputDecoration.collapsed(
-                    hintText: "Search jobs or Position",
-                  ),
-                ),
+                hintText: "Search",
               ),
-              SizedBox(height: 20),
-              Text(
-                "Jobs For You",
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700),
-              ),
-              SizedBox(height: 40),
-              jobsItem(context),
-            ],
-          ),
+            ),
+            SizedBox(height: 10),
+            Text(
+              "Recommended Place",
+              style: TextStyle(fontWeight: FontWeight.w600, fontSize: 20),
+            ),
+            SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: () {
+                _signOut().then((value) => Navigator.of(context).pushReplacement(
+                      MaterialPageRoute(builder: (context) => LoginScreen()),
+                    ));
+              },
+              child: Text('Logout'),
+            ),
+          ],
         ),
       ),
     );
   }
-
-  Container jobsItem(BuildContext context) {
-    return Container(
-      height: MediaQuery.of(context).size.height / 2,
-      child: GridView.count(
-        primary: false,
-        padding: const EdgeInsets.all(20),
-        crossAxisSpacing: 10,
-        mainAxisSpacing: 10,
-        crossAxisCount: 2,
-        children: <Widget>[
-          Container(
-            padding: const EdgeInsets.all(8),
-            decoration: BoxDecoration(
-              color: Color(0xffE9FFEB),
-              borderRadius: BorderRadius.circular(10),
-            ),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Image.asset(
-                  "assets/img/gojek.png",
-                  height: 20,
-                  width: 20,
-                ),
-                SizedBox(height: 16),
-                Text(
-                  "Digital Marketing",
-                  style: titleStyle(),
-                ),
-                SizedBox(height: 16),
-                Text(
-                  "1-3 Year Experience",
-                  style: subTitle(),
-                ),
-                SizedBox(height: 16),
-                Row(
-                  children: [
-                    Text(
-                      "FullTime",
-                      style: positionText(),
-                    ),
-                    SizedBox(width: 16),
-                    Text(
-                      "Senior",
-                      style: positionText(),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ),
-          Container(
-            padding: const EdgeInsets.all(8),
-            decoration: BoxDecoration(
-              color: Color(0xffFFEBE7),
-              borderRadius: BorderRadius.circular(10),
-            ),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Image.asset(
-                  "assets/img/shopee.png",
-                  height: 20,
-                  width: 20,
-                ),
-                SizedBox(height: 16),
-                Text(
-                  "Content Creator",
-                  style: titleStyle(),
-                ),
-                SizedBox(height: 16),
-                Text(
-                  "1-3 Year Experience",
-                  style: subTitle(),
-                ),
-                SizedBox(height: 16),
-                Row(
-                  children: [
-                    Text(
-                      "FullTime",
-                      style: positionText(),
-                    ),
-                    SizedBox(width: 16),
-                    Text(
-                      "Internship",
-                      style: positionText(),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ),
-          Container(
-            padding: const EdgeInsets.all(8),
-            decoration: BoxDecoration(
-              color: Color(0xffFFE2EB),
-              borderRadius: BorderRadius.circular(10),
-            ),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Image.asset(
-                  "assets/img/bukalapak.png",
-                  height: 20,
-                  width: 20,
-                ),
-                SizedBox(height: 16),
-                Text(
-                  "Front End Dev",
-                  style: titleStyle(),
-                ),
-                SizedBox(height: 16),
-                Text(
-                  "1-3 Year Experience",
-                  style: subTitle(),
-                ),
-                SizedBox(height: 16),
-                Row(
-                  children: [
-                    Text(
-                      "FullTime",
-                      style: positionText(),
-                    ),
-                    SizedBox(width: 16),
-                    Text(
-                      "Senior",
-                      style: positionText(),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ),
-          Container(
-            padding: const EdgeInsets.all(8),
-            decoration: BoxDecoration(
-              color: Color(0xffE9F6FF),
-              borderRadius: BorderRadius.circular(10),
-            ),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Image.asset(
-                  "assets/img/blibli.png",
-                  height: 20,
-                  width: 20,
-                ),
-                SizedBox(height: 16),
-                Text(
-                  "UX Designer",
-                  style: titleStyle(),
-                ),
-                SizedBox(height: 16),
-                Text(
-                  "1-3 Year Experience",
-                  style: subTitle(),
-                ),
-                SizedBox(height: 16),
-                Row(
-                  children: [
-                    Text(
-                      "FullTime",
-                      style: positionText(),
-                    ),
-                    SizedBox(width: 16),
-                    Text(
-                      "Senior",
-                      style: positionText(),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  TextStyle positionText() {
-    return TextStyle(color: Colors.grey, fontWeight: FontWeight.w400);
-  }
-
-  TextStyle subTitle() {
-    return TextStyle(fontWeight: FontWeight.w500);
-  }
-
-  TextStyle titleStyle() {
-    return TextStyle(fontSize: 15, fontWeight: FontWeight.w700);
-  }
 }
+
+final countries = ["Tokyo", "Berlin", "Roma", "Monas"];
